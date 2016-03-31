@@ -46,6 +46,7 @@
 - (instancetype)initWithURLRequest:(NSURLRequest*)request {
     self = [super init];
     if (self) {
+        self.actionButtonHidden = NO;
         self.request = request;
     }
     return self;
@@ -164,6 +165,11 @@
     return _actionBarButtonItem;
 }
 
+- (void)setActionButtonHidden:(BOOL)actionButtonHidden {
+    _actionButtonHidden = actionButtonHidden;
+    [self updateToolbarItems];
+}
+
 #pragma mark - Toolbar
 
 - (void)updateToolbarItems {
@@ -179,7 +185,7 @@
         CGFloat toolbarWidth = 250.0f;
         fixedSpace.width = 35.0f;
         
-        NSArray *items = [NSArray arrayWithObjects:
+        NSMutableArray *items = [NSMutableArray arrayWithObjects:
                           fixedSpace,
                           refreshStopBarButtonItem,
                           fixedSpace,
@@ -187,8 +193,10 @@
                           fixedSpace,
                           self.forwardBarButtonItem,
                           fixedSpace,
-                          self.actionBarButtonItem,
                           nil];
+        if (!self.isActionButtonHidden) {
+            [items addObject:self.actionBarButtonItem];
+        }
         
         UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0.0f, 0.0f, toolbarWidth, 44.0f)];
         toolbar.items = items;
@@ -198,17 +206,19 @@
     }
     
     else {
-        NSArray *items = [NSArray arrayWithObjects:
+        NSMutableArray *items = [NSMutableArray arrayWithObjects:
                           fixedSpace,
                           self.backBarButtonItem,
                           flexibleSpace,
                           self.forwardBarButtonItem,
                           flexibleSpace,
                           refreshStopBarButtonItem,
-                          flexibleSpace,
-                          self.actionBarButtonItem,
-                          fixedSpace,
                           nil];
+        
+        if (!self.isActionButtonHidden) {
+            [items addObjectsFromArray:@[flexibleSpace, self.actionBarButtonItem]];
+        }
+        [items addObject:fixedSpace];
         
         self.navigationController.toolbar.barStyle = self.navigationController.navigationBar.barStyle;
         self.navigationController.toolbar.tintColor = self.navigationController.navigationBar.tintColor;

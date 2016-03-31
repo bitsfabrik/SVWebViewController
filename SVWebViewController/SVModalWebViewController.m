@@ -57,6 +57,16 @@
     self.navigationBar.tintColor = self.barsTintColor;
 }
 
+#pragma mark - Forwarding
+
+- (void)setActionButtonHidden:(BOOL)actionButtonHidden {
+    self.webViewController.actionButtonHidden = actionButtonHidden;
+}
+
+- (BOOL)isActionButtonHidden {
+    return self.webViewController.actionButtonHidden;
+}
+
 #pragma mark - Delegate
 
 - (void)setWebViewDelegate:(id<UIWebViewDelegate>)webViewDelegate {
