@@ -46,7 +46,7 @@
 - (instancetype)initWithURLRequest:(NSURLRequest*)request {
     self = [super init];
     if (self) {
-        self.actionButtonHidden = NO;
+        _actionButtonHidden = NO;
         self.request = request;
     }
     return self;
@@ -301,6 +301,7 @@
             UIPopoverPresentationController *ctrl = activityController.popoverPresentationController;
             ctrl.sourceView = self.view;
             ctrl.barButtonItem = sender;
+			[self presentViewController:activityController animated:YES completion:nil];
         }
     }
 }
